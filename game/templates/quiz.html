@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Take the quiz!{% endblock %}
+
+{% block content %}
+  <h1>Quiz</h1>
+  <h2>answer the below questions to test your food cost knowledge.</h2>
+  <div id="questions"></div>
+  <button id="quiz-submit">submit quiz</button>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+  var quizData;
+
+  function createQuestionText(question) {
+    return `How much does ${question.rounded_amount} ${question.variant.size_of_cup_eq_measurement} of ${question.variant.storage_type} ${question.variant.consumable.name} cost?`;
+  }
+
+  function createQuestionElement(question, index) {
+    var $div = $('<div />', {id: `question-${index}`});
+    var $label = $('<label />').text(createQuestionText(question));
+    var $input = $('<input />', {
+      type: 'text',
+      name: 'guess',
+      placeholder: 'guess'
+    });
+    return $div.append([$label, $input]);
+  }
+
+  function bindQuizSubmit() {
+    $('#quiz-submit').on('click', function() {
+      $('#questions > div').each(function(index) {
+        console.log($(this).find('input').val())
+      });
+    });
+  }
+
+  $(document).ready(function() {
+    $.get("{% url 'api:blank-quiz' %}")
+    .done(function(data) {
+      quizData = data.questions;
+      quizData.forEach(function(item, index) {
+        $('#questions').append(
+            createQuestionElement(item, index)
+        );
+      });
+      bindQuizSubmit();
+    });
+  });
+</script>
+{% endblock %}

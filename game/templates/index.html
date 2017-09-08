@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block page_title %}Food Trivia Game{% endblock %}
+{% block content %}
+<h1>Food Cost Game</h1>
+<h2>Test your knowledge of how much food costs in America.</h2>
+<a href="{% url 'game:cost-quiz' %}">begin</a>
+{% endblock %}
