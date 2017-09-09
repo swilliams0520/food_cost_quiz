@@ -53,7 +53,7 @@ class Quiz(models.Model):
         previous_question_ids = list()
         questions = list()
 
-        for _ in range(amount + 1):
+        for _ in range(amount):
             question = Question()
             unique = False
 

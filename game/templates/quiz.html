@@ -14,6 +14,7 @@
 {% block scripts %}
 <script>
   var quizData;
+  var errors;
 
   function createQuestionText(question) {
     return `How much does ${question.rounded_amount} ${question.variant.size_of_cup_eq_measurement} of ${question.variant.storage_type} ${question.variant.consumable.name} cost?`;
@@ -25,21 +26,52 @@
     var $input = $('<input />', {
       type: 'text',
       name: 'guess',
-      placeholder: 'guess'
+      placeholder: 'guess',
+      value: Math.random() * 4
     });
     return $div.append([$label, $input]);
+  }
+
+  function postAnswersToAPI() {
+    $.post("{% url 'api:cost-quiz' %}")
+    .done(function(data) {
+      console.log(data);
+    })
+    .fail(function(e) {
+      console.log(e)
+    })
   }
 
   function bindQuizSubmit() {
     $('#quiz-submit').on('click', function() {
       $('#questions > div').each(function(index) {
-        console.log($(this).find('input').val())
+        var id = $(this).attr('id').split('-')[1];
+        var amount = $(this).find('input').val();
+
+        if(isNaN(amount) || amount === '') {
+          errors = errors || [];
+          errors.push({
+            message: 'Please enter a valid number.',
+            questionId: id
+          });
+        } else {
+          quizData[id].guess = {
+            amount: parseInt(amount)
+          };
+        }
       });
+      if (errors) {
+        console.log('there were errors mate.');
+        console.log(errors)
+      } else {
+        postAnswersToAPI();
+      }
+      errors = undefined;
     });
   }
 
   $(document).ready(function() {
-    $.get("{% url 'api:blank-quiz' %}")
+    $.get("{% url 'api:cost-quiz' %}")
     .done(function(data) {
       quizData = data.questions;
       quizData.forEach(function(item, index) {
