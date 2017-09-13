@@ -5,8 +5,11 @@
 {% block content %}
   <h1>Quiz</h1>
   <h2>answer the below questions to test your food cost knowledge.</h2>
-  <div id="questions"></div>
-  <button id="quiz-submit">submit quiz</button>
+  <form>
+    <div id="questions"></div>
+    <button id="quiz-submit">submit quiz</button>
+  </form>
+
 {% endblock %}
 
 
@@ -33,17 +36,23 @@
   }
 
   function postAnswersToAPI() {
-    $.post("{% url 'api:cost-quiz' %}")
+    $.ajax({
+      url : "{% url 'api:submit-quiz' %}",
+      data : JSON.stringify({'questions': quizData}),
+      processData : false,
+      method : 'POST'
+    })
     .done(function(data) {
       console.log(data);
     })
     .fail(function(e) {
-      console.log(e)
+      console.log(e.responseText)
     })
   }
 
   function bindQuizSubmit() {
-    $('#quiz-submit').on('click', function() {
+    $('#quiz-submit').on('click', function(e) {
+      e.preventDefault();
       $('#questions > div').each(function(index) {
         var id = $(this).attr('id').split('-')[1];
         var amount = $(this).find('input').val();
@@ -56,7 +65,7 @@
           });
         } else {
           quizData[id].guess = {
-            amount: parseInt(amount)
+            amount: amount
           };
         }
       });
@@ -67,6 +76,7 @@
         postAnswersToAPI();
       }
       errors = undefined;
+      return false;
     });
   }
 
