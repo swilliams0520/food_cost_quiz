@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse
+from django.db import transaction, IntegrityError
 
-from game.models import Quiz
+from game.models import Quiz, Guess, Answer
 from .serializers import NewQuizSerializer, QuizSerializer, QuestionSerializer
 
 
@@ -23,23 +24,27 @@ def submit_quiz(request):
         json_data = json.loads(request.body)
 
         total_score = 0
+        try:
+            with transaction.atomic():
+                quiz = Quiz.objects.create()
+                for question_data in json_data['questions']:
+                    question = QuestionSerializer(data=question_data)
 
-        for question in json_data['questions']:
-            # question = QuestionSerializer(question)
-            correct_answer = float(question['rounded_amount']) * float(question['variant']['avg_retail_price'])
-            guess = float(question['guess']['amount'])
-            guess_difference = abs(correct_answer - guess)
+                    if question.is_valid():
+                        question = question.save()
+                    else:
+                        raise IntegrityError
 
-            if guess_difference <= 1:
-                score = 10
-            elif guess_difference > 1 and guess_difference <= 2:
-                score = 5
-            else:
-                score = 0
+                    guess_amount = float(question_data['guess']['amount'])
+                    guess = Guess.objects.create(amount=guess_amount, question=question)
+                    answer = Answer.objects.create(guess=guess, question=question, quiz=quiz)
+                    quiz.answer_set.add(answer)
 
-            total_score += score
+                quiz.save()
+                return HttpResponse(quiz.id)
 
-            pprint(total_score)
+        except BaseException as e:
+            raise e from None
 
 
 

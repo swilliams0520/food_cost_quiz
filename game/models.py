@@ -33,6 +33,10 @@ class Question(models.Model):
     def rounded_amount(self):
         return round(self.amount * 4) / 4
 
+    @property
+    def actual_price(self):
+        return self.amount * self.variant.avg_retail_price
+
     def __str__(self):
         return f'How much does {self.rounded_amount} {self.variant.size_of_cup_eq_measurement} of {self.variant.storage_type} {self.variant.consumable.name} cost?'
 
@@ -44,6 +48,7 @@ class Guess(models.Model):
 
     class Meta:
         verbose_name_plural = 'guesses'
+
 
 class Quiz(models.Model):
     questions = models.ManyToManyField(Question, through='Answer', through_fields=('quiz', 'question'))
@@ -75,6 +80,21 @@ class Quiz(models.Model):
 
         return questions
 
+    def get_results(self):
+        total_score = 0
+        for answer in self.answer_set.all():
+            answer_difference = answer.guess_difference
+
+            if answer_difference <= 1:
+                score = 10
+            elif answer_difference > 1 and answer_difference <= 2:
+                score = 5
+            else:
+                score = 0
+
+            total_score += score
+
+        return total_score
 
     class Meta:
         verbose_name_plural = 'quizzes'
@@ -83,3 +103,7 @@ class Answer(models.Model):
     guess = models.ForeignKey(Guess)
     question = models.ForeignKey(Question)
     quiz = models.ForeignKey(Quiz)
+
+    @property
+    def guess_difference(self):
+        return abs(self.guess.amount - (self.question.amount * self.question.variant.avg_retail_price))

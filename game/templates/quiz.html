@@ -64,8 +64,12 @@
             questionId: id
           });
         } else {
+          amount = amount.slice(0, 12)
+          amount = amount.split('.')
+          amount[1] = amount[1].slice(0, 4)
+          amount = amount.join('.')
           quizData[id].guess = {
-            amount: amount
+            amount : amount
           };
         }
       });

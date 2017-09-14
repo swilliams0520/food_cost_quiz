@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block page_title %}Food Trivia Results{% endblock %}
+{% block content %}
+<h1>Food Cost Game Results</h1>
+<div>
+  <h3>Total Score: {{ quiz.get_results }}</h3>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+  {% endif %}
+</div>
+<!-- 2do: round digits in decimals to 2 so there are no long #s -->
+<div>
+    {% for answer in quiz.answer_set.all %}
+    <div id='question'>
+      <p>
+        Question: {{ answer.question }}
+      </p>
+      <p>
+        Guess: ${{ answer.guess.amount }}
+      </p>
+      <p>
+        Actual Answer: ${{ answer.question.actual_price }}
+      </p>
+      <p>
+        Difference: ${{ answer.guess_difference }}
+
+      </p>
+    </div>
+    <hr />
+    {% endfor %}
+
+</div>
+<a href="{% url 'game:cost-quiz' %}">take again</a>
+{% endblock %}
