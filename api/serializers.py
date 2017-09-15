@@ -30,7 +30,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ('variant', 'guess', 'rounded_amount')
+        fields = ('variant', 'guess', 'rounded_amount', 'singular_measurement')
 
     def create(self, validated_data):
         question = Question()

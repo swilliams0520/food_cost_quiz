@@ -3,5 +3,7 @@
 {% block content %}
 <h1>Food Cost Game</h1>
 <h2>Test your knowledge of how much food costs in America.</h2>
-<a href="{% url 'game:cost-quiz' %}">begin</a>
+<a href="{% url 'game:one-pound-quiz' %}">easy quiz</a>
+<a href="{% url 'game:cost-quiz' %}">hard quiz</a>
+
 {% endblock %}

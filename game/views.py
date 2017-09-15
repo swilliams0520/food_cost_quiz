@@ -10,13 +10,16 @@ def index(request):
 
 @ensure_csrf_cookie
 def quiz(request):
-    questions = Quiz.create_random_questions()
-    return render(request, 'quiz.html', {'questions': questions})
+    return render(request, 'quiz.html')
+
+@ensure_csrf_cookie
+def one_pound_quiz(request):
+    return render(request, 'one-pound-quiz.html')
 
 def results(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
     score = quiz.get_results()
-    
+
     if score >= 50:
         messages.info(request, 'Great job, you recieved an exemplary score!')
     elif score >= 20 and score < 50:

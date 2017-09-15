@@ -1,4 +1,5 @@
 import random
+import re
 
 from django.db import models
 
@@ -37,6 +38,13 @@ class Question(models.Model):
     def actual_price(self):
         return self.amount * self.variant.avg_retail_price
 
+    @property
+    def singular_measurement(self):
+        if re.search(r'.+s$', self.variant.size_of_cup_eq_measurement) and self.amount == 1:
+            return self.variant.size_of_cup_eq_measurement[:-1]
+        else:
+            return self.variant.size_of_cup_eq_measurement
+
     def __str__(self):
         return f'How much does {self.rounded_amount} {self.variant.size_of_cup_eq_measurement} of {self.variant.storage_type} {self.variant.consumable.name} cost?'
 
@@ -54,7 +62,7 @@ class Quiz(models.Model):
     questions = models.ManyToManyField(Question, through='Answer', through_fields=('quiz', 'question'))
 
     @staticmethod
-    def create_random_questions(amount=10):
+    def create_questions(is_random=True, default=1, amount=10):
         previous_question_ids = list()
         questions = list()
 
@@ -72,13 +80,17 @@ class Quiz(models.Model):
                 if len(variants) <= len(previous_question_ids):
                     break
 
-            question.amount = (random.random() * 4) + 0.5
+            if is_random == True:
+                question.amount = (random.random() * 4) + 0.5
+            else:
+                question.amount = default
 
             if unique:
                 previous_question_ids.append((question.variant.id, question.variant.consumable.id))
                 questions.append(question)
 
         return questions
+
 
     def get_results(self):
         total_score = 0

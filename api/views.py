@@ -12,12 +12,15 @@ from game.models import Quiz, Guess, Answer
 from .serializers import NewQuizSerializer, QuizSerializer, QuestionSerializer
 
 
-class QuizAPIView(APIView):
-
+class CostQuizAPIView(APIView):
     def get(self, request, format=None):
-        quiz_json = NewQuizSerializer({'questions': Quiz.create_random_questions()})
+        quiz_json = NewQuizSerializer({'questions': Quiz.create_questions()})
         return Response(quiz_json.data)
 
+class PoundQuizAPIView(APIView):
+    def get(self, request, format=None):
+        quiz_json = NewQuizSerializer({'questions': Quiz.create_questions(is_random=False)})
+        return Response(quiz_json.data)
 
 def submit_quiz(request):
     if request.method == 'POST':
