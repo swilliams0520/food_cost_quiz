@@ -9,7 +9,7 @@
   function createQuestionElement(question, index) {
     var $div = $('<div />', {id: `question-${index}`});
     var $label = $('<label />').text(createQuestionText(question));
-    var $input = $('<input />', {
+    var $input = $('<br /><input />', {
       type: 'text',
       name: 'guess',
       placeholder: 'guess',
@@ -75,6 +75,7 @@
         );
       });
       bindQuizSubmit();
+      $('#questions').gallerify();
     });
   });
 </script>
