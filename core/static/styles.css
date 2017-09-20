@@ -1,3 +1,6 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css');
+
 * {
   box-sizing: border-box;
 }
@@ -36,7 +39,37 @@ h1 {
 a.button {
   text-decoration: none;
   color: black;
-  margin: 5px;
+  margin-top: 5px;
   padding: 5px;
   background: LimeGreen;
+}
+
+#arrow-button-next {
+  style: none;
+  border: solid 2px white;
+  color: LimeGreen;
+  background: white;
+}
+
+#arrow-button-previous {
+  style: none;
+  border: solid 2px white;
+  margin-right: 5px;
+  color: LimeGreen;
+  background: white;
+}
+
+.easy-quiz-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 2em;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+
+#quiz-submit {
+  align-self: center;
 }

@@ -20,7 +20,7 @@ $.fn.gallerify = function(opts) {
         // Wrap our current index to map our images.
         var index = parseInt($this.attr('current-image')) + distance;
         // Fancy math to make sure we're not wrapping negatively.
-        index = (index >= 0) ? index % $images.length : $images.length + index;
+        // index = (index >= 0) ? index % $images.length : $images.length + index;
         // Hide the last visible item.
         $images.eq($this.attr('current-image')).removeClass('gallerify-show');
         // Update our current position by distance.
@@ -29,22 +29,46 @@ $.fn.gallerify = function(opts) {
         $this.attr('current-image', index);
     }
 
-    var $nextButton = $('<button id="arrow-button" />').text('next question');
-    var $prevButton = $('<button id-"arrow-button" />').text('previous question');
+    var $nextButton = $('<button id="arrow-button-next" />').text('next question');
+    var $prevButton = $('<button id="arrow-button-previous" />').text('previous question');
 
     $this.append($prevButton);
-    $this.append($nextButton)
+    $this.append($nextButton);
+
+    function removeButtons() {
+      if($this.attr('current-image') === ($images.length - 1).toString()) {
+        $('#arrow-button-next').prop("disabled", true);
+        $('#quiz-submit').show();
+      } else {
+        $('#quiz-submit').hide();
+        $('#arrow-button-next').removeAttr("disabled");
+      }
+
+      if (parseInt($this.attr('current-image')) === 0) {
+        $('#arrow-button-previous').prop("disabled", true);
+      } else {
+        $('#arrow-button-previous').removeAttr("disabled");
+      }
+
+    }
+
+    removeButtons();
 
     $nextButton.click(function(e) {
         e.preventDefault();
         moveAroundGallery(1);
+        removeButtons();
         return false;
     });
     $prevButton.click(function(e) {
         e.preventDefault();
         moveAroundGallery(-1);
+        removeButtons();
         return false;
-    })
+
+    });
+    // testing hide next button at last question
+
 };
 
 // Bind our plugin to tags that have our image-gallery attribute.

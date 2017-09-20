@@ -9,10 +9,10 @@
   function createQuestionElement(question, index) {
     var $div = $('<div />', {id: `question-${index}`});
     var $label = $('<label />').text(createQuestionText(question));
-    var $input = $('<br /><input />', {
+    var $input = $('<input />', {
       type: 'text',
       name: 'guess',
-      placeholder: 'guess',
+      placeholder: 'eg. 1.25',
       // value: Math.random() * 4
     });
     return $div.append([$label, $input]);
