@@ -11,6 +11,10 @@ class Consumable(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    @property
+    def lowercase_name(self):
+        return str(self.name).casefold()
+
 class Variant(models.Model):
     storage_type = models.CharField(max_length=128)
     avg_retail_price = models.DecimalField(max_digits=12, decimal_places=8)
@@ -39,14 +43,23 @@ class Question(models.Model):
         return self.amount * self.variant.avg_retail_price
 
     @property
+    def truncated_actual_price(self):
+        return str(self.actual_price)[0:4]
+
+
+    @property
     def singular_measurement(self):
         if re.search(r'.+s$', self.variant.size_of_cup_eq_measurement) and self.amount == 1:
             return self.variant.size_of_cup_eq_measurement[:-1]
         else:
             return self.variant.size_of_cup_eq_measurement
 
+    @property
+    def lowercase_storage_type(self):
+        return str(self.variant.storage_type).casefold()
+
     def __str__(self):
-        return f'How much does {self.rounded_amount} {self.variant.size_of_cup_eq_measurement} of {self.variant.storage_type} {self.variant.consumable.name} cost?'
+        return f'How much does {self.rounded_amount} {self.variant.size_of_cup_eq_measurement} of {self.lowercase_storage_type} {self.variant.consumable.lowercase_name} cost?'
 
 #return f'How much of a {self.variant.storage_type} is edible?
 
@@ -56,6 +69,11 @@ class Guess(models.Model):
 
     class Meta:
         verbose_name_plural = 'guesses'
+
+    @property
+    def truncated_amount(self):
+        amount =  str(self.amount)
+        return amount[0:4]
 
 
 class Quiz(models.Model):
@@ -140,3 +158,7 @@ class Answer(models.Model):
     @property
     def guess_difference(self):
         return abs(self.guess.amount - (self.question.amount * self.question.variant.avg_retail_price))
+
+    @property
+    def truncated_guess_difference(self):
+        return str(self.guess_difference)[0:4]

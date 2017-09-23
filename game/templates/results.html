@@ -24,6 +24,7 @@
             fb share button
 
    -->
+   <hr />
   <div>
       {% for answer in quiz.answer_set.all %}
       <div id='question'>
@@ -31,13 +32,13 @@
           Question: {{ answer.question }}
         </p>
         <p>
-          Guess: ${{ answer.guess.amount }}
+          Guess: ${{ answer.guess.truncated_amount }}
         </p>
         <p>
-          Actual Answer: ${{ answer.question.actual_price }}
+          Actual Answer: ${{ answer.question.truncated_actual_price }}
         </p>
         <p>
-          Difference: ${{ answer.guess_difference }}
+          Difference: ${{ answer.truncated_guess_difference }}
 
         </p>
       </div>

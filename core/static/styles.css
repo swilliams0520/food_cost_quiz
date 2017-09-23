@@ -99,3 +99,12 @@ a.button {
   color: #E37461;
 
 }
+
+#questions {
+  word-wrap: normal;
+  align-self: center;
+}
+
+#questions p {
+  font-size: 10px;
+}

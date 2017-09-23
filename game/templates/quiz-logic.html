@@ -6,9 +6,14 @@
     return `How much does ${question.rounded_amount.slice(0, 3)} ${question.singular_measurement} of ${question.variant.storage_type.toLowerCase()} ${question.variant.consumable.name.toLowerCase()} cost?`;
   }
 
+  function displayAddendum(question) {
+    return `Definition: ${question.variant.addendum}`
+  }
+
   function createQuestionElement(question, index) {
     var $div = $('<div />', {id: `question-${index}`});
     var $label = $('<label />').text(createQuestionText(question));
+    var $paragraph = $('<p />').text(displayAddendum(question));
     var $input = $('<input />', {
       type: 'text',
       name: 'guess',
