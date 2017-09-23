@@ -2,18 +2,29 @@
 
 {% block page_title %}Take the quiz!{% endblock %}
 
+{% block stylesheets %}
+  <style>
+  #questions > div:not(.gallerify-show) { display: none; }
+  </style>
+{% endblock %}
+
 {% block content %}
-  <h1>Quiz</h1>
-  <h2>answer the below questions to test your food cost knowledge.</h2>
+<div class="easy-quiz-container">
   <form>
     <div id="questions"></div>
     <button id="quiz-submit">submit quiz</button>
   </form>
+</div>
 
 {% endblock %}
 
 
 
 {% block scripts %}
+{% load static %}
+
+<script src="{% static 'question-rotate.js' %}"></script>
+
+
 {% include 'quiz-logic.html' with url_name='api:cost-quiz' %}
 {% endblock %}

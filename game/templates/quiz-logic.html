@@ -3,7 +3,7 @@
   var errors;
 
   function createQuestionText(question) {
-    return `How much does ${question.rounded_amount} ${question.singular_measurement} of ${question.variant.storage_type.toLowerCase()} ${question.variant.consumable.name.toLowerCase()} cost?`;
+    return `How much does ${question.rounded_amount.slice(0, 3)} ${question.singular_measurement} of ${question.variant.storage_type.toLowerCase()} ${question.variant.consumable.name.toLowerCase()} cost?`;
   }
 
   function createQuestionElement(question, index) {

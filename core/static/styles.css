@@ -10,14 +10,13 @@ html, body {
 }
 
 body {
-  background: tomato;
+  background: #F4F6F6;
 }
 
 #container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: solid 2px white;
   padding: 30px;
 
 }
@@ -26,9 +25,13 @@ h1 {
   color: white;
 }
 
+h2 {
+
+}
+
 #quiz-buttons {
   flex-direction: row;
-
+  padding: 2px;
 }
 
 .button {
@@ -38,16 +41,17 @@ h1 {
 
 a.button {
   text-decoration: none;
-  color: black;
-  margin-top: 5px;
+  text-align: center;
+  color: white;
+  margin: 5px;
   padding: 5px;
-  background: LimeGreen;
+  background: #E37461;
 }
 
 #arrow-button-next {
   style: none;
   border: solid 2px white;
-  color: LimeGreen;
+  color: #E37461;
   background: white;
 }
 
@@ -55,7 +59,7 @@ a.button {
   style: none;
   border: solid 2px white;
   margin-right: 5px;
-  color: LimeGreen;
+  color: #E37461;
   background: white;
 }
 
@@ -69,7 +73,29 @@ a.button {
   align-items: center;
 }
 
-
 #quiz-submit {
   align-self: center;
+}
+
+.info {
+  list-style: none;
+  font-style: italic;
+}
+
+.source-citation {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.results-container {
+  margin: 15px;
+}
+
+.info {
+  color: #E37461;
+}
+
+.results-header {
+  color: #E37461;
+
 }

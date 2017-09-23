@@ -108,6 +108,27 @@ class Quiz(models.Model):
 
         return total_score
 
+    @property
+    def get_food_cost_results_total(self):
+        total_food_cost = 0
+        for cost in self.answer_set.all():
+            food_cost = cost.question.actual_price
+            total_food_cost += food_cost
+
+        total_food_cost = str(total_food_cost)
+
+        return total_food_cost[0:5]
+
+    @property
+    def total_guess_amount(self):
+        total_guess = 0
+        for user_guess in self.answer_set.all():
+            total_guess += user_guess.guess.amount
+
+        total_guess = str(total_guess)
+
+        return total_guess[0:5]
+
     class Meta:
         verbose_name_plural = 'quizzes'
 

@@ -2,13 +2,14 @@
 {% block page_title %}Food Trivia Game{% endblock %}
 {% block content %}
 <div id="container">
-  <h1>Food Cost Game</h1>
   <h2>Test your knowledge of how much food costs in America.</h2>
   <div id="quiz-buttons">
     <a href="{% url 'game:one-pound-quiz' %}" class="button">easy quiz</a>
     <a href="{% url 'game:cost-quiz' %}" class="button">hard quiz</a>
   </div>
-
+  <a href="https://www.ers.usda.gov/data-products/fruit-and-vegetable-prices.aspx" class="source-citation" target="_blank">
+    Data Source: United States Department of Agriculture; Economic Research Service
+  </a>
 </div>
 
 

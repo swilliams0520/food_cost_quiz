@@ -1,45 +1,51 @@
 {% extends 'base.html' %}
 {% block page_title %}Food Trivia Results{% endblock %}
 {% block content %}
-<h1>Food Cost Game Results</h1>
-<div>
-  <h3>Total Score: {{ quiz.get_results }}</h3>
-  {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-  {% endif %}
+<div class="results-container">
+  <div>
+    <h3 class="results-header">Total Score: {{ quiz.get_results }}</h3>
+    {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+    {% endif %}
+    <p>
+      The total cost of all food questions in the quiz was ${{ quiz.get_food_cost_results_total }}<br />
+      The total of your guesses was ${{ quiz.total_guess_amount }}
+    </p>
+  </div>
+  <!-- 2do: round digits in decimals to 2 so there are no long #s
+            js one question at a time in quiz view
+            stylize
+            try a single pound quiz instead of random
+            try a new quiz with food percent that is usable
+            fb share button
+
+   -->
+  <div>
+      {% for answer in quiz.answer_set.all %}
+      <div id='question'>
+        <p>
+          Question: {{ answer.question }}
+        </p>
+        <p>
+          Guess: ${{ answer.guess.amount }}
+        </p>
+        <p>
+          Actual Answer: ${{ answer.question.actual_price }}
+        </p>
+        <p>
+          Difference: ${{ answer.guess_difference }}
+
+        </p>
+      </div>
+      <hr />
+      {% endfor %}
+
+  </div>
+  <a href="{% url 'game:cost-quiz' %}">take again</a>
+  <a href="https://www.ers.usda.gov/data-products/fruit-and-vegetable-prices.aspx" target="_blank">data source</a>
 </div>
-<!-- 2do: round digits in decimals to 2 so there are no long #s
-          js one question at a time in quiz view
-          stylize
-          try a single pound quiz instead of random
-          try a new quiz with food percent that is usable
-          fb share button
-
- -->
-<div>
-    {% for answer in quiz.answer_set.all %}
-    <div id='question'>
-      <p>
-        Question: {{ answer.question }}
-      </p>
-      <p>
-        Guess: ${{ answer.guess.amount }}
-      </p>
-      <p>
-        Actual Answer: ${{ answer.question.actual_price }}
-      </p>
-      <p>
-        Difference: ${{ answer.guess_difference }}
-
-      </p>
-    </div>
-    <hr />
-    {% endfor %}
-
-</div>
-<a href="{% url 'game:cost-quiz' %}">take again</a>
 {% endblock %}
