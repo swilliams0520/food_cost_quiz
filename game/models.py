@@ -72,8 +72,7 @@ class Guess(models.Model):
 
     @property
     def truncated_amount(self):
-        amount =  str(self.amount)
-        return amount[0:4]
+        return "{0:.2f}".format(round(self.amount, 2))
 
 
 class Quiz(models.Model):
